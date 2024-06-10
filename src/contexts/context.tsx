@@ -17,6 +17,7 @@ interface Columns {
 interface DataContextProps {
   data: Data;
   columns: Columns;
+  forms: Columns;
   loading: boolean;
 }
 
@@ -37,6 +38,12 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
     products: [],
     reviews: [],
   });
+  const [forms, setForms] = useState<Columns>({
+    users: [],
+    brands: [],
+    products: [],
+    reviews: [],
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -47,12 +54,14 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
         const productsRes = await fetch("/data/products.json");
         const reviewsRes = await fetch("/data/reviews.json");
         const columnsRes = await fetch("/data/columns.json");
+        const formsRes = await fetch("/data/forms.json");
 
         if (
           !usersRes.ok ||
           !brandsRes.ok ||
           !productsRes.ok ||
           !reviewsRes.ok ||
+          !formsRes.ok ||
           !columnsRes.ok
         ) {
           throw new Error("Failed to fetch data");
@@ -63,6 +72,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
         const products = await productsRes.json();
         const reviews = await reviewsRes.json();
         const columnsData = await columnsRes.json();
+        const formsData = await formsRes.json();
 
         setData({
           users,
@@ -71,6 +81,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
           reviews,
         });
         setColumns(columnsData);
+        setForms(formsData);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -82,7 +93,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   return (
-    <DataContext.Provider value={{ data, columns, loading }}>
+    <DataContext.Provider value={{ data, columns, forms, loading }}>
       {children}
     </DataContext.Provider>
   );

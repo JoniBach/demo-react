@@ -5,9 +5,10 @@ import "tabulator-tables/dist/css/tabulator.min.css";
 interface TableProps {
   data: any[];
   columns: any[];
+  id: string;
 }
 
-export const Table: React.FC<TableProps> = ({ data, columns }) => {
+export const Table: React.FC<TableProps> = ({ data, columns, id }) => {
   const tableRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -25,5 +26,10 @@ export const Table: React.FC<TableProps> = ({ data, columns }) => {
     }
   }, [data, columns]);
 
-  return <div ref={tableRef}></div>;
+  return (
+    <div>
+      <h1>{id}</h1>
+      <div ref={tableRef}></div>
+    </div>
+  );
 };

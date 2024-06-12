@@ -15,33 +15,16 @@ export const FormRoute: React.FC = () => {
         <p>Loading...</p>
       ) : (
         <>
-          <h1>Users Form</h1>
-          <Form
-            onSubmit={handleSubmit}
-            data={data.users[0]}
-            fields={forms.users}
-          />
-
-          <h1>Brands Form</h1>
-          <Form
-            onSubmit={handleSubmit}
-            data={data.brands[0]}
-            fields={forms.brands}
-          />
-
-          <h1>Products Form</h1>
-          <Form
-            onSubmit={handleSubmit}
-            data={data.products[0]}
-            fields={forms.products}
-          />
-
-          <h1>Reviews Form</h1>
-          <Form
-            onSubmit={handleSubmit}
-            data={data.reviews[0]}
-            fields={forms.reviews}
-          />
+          {forms.map((form: any) => (
+            <div key={form.id}>
+              <h1>{form.id.charAt(0).toUpperCase() + form.id.slice(1)} Form</h1>
+              <Form
+                onSubmit={handleSubmit}
+                data={data?.[form.id]?.[0]}
+                fields={form.data}
+              />
+            </div>
+          ))}
         </>
       )}
     </div>

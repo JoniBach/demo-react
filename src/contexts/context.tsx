@@ -17,7 +17,7 @@ interface Columns {
 interface DataContextProps {
   data: Data;
   columns: any;
-  forms: Columns;
+  forms: any;
   loading: boolean;
 }
 

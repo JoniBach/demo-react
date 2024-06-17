@@ -18,6 +18,7 @@ interface DataContextProps {
   data: Data;
   columns: any;
   forms: any;
+  charts: any;
   loading: boolean;
 }
 
@@ -44,6 +45,12 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
     products: [],
     reviews: [],
   });
+  const [charts, setCharts] = useState<Columns>({
+    users: [],
+    brands: [],
+    products: [],
+    reviews: [],
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -55,6 +62,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
         const reviewsRes = await fetch("/data/reviews.json");
         const columnsRes = await fetch("/data/columns.json");
         const formsRes = await fetch("/data/forms.json");
+        const chartsRes = await fetch("/data/charts.json");
 
         if (
           !usersRes.ok ||
@@ -62,6 +70,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
           !productsRes.ok ||
           !reviewsRes.ok ||
           !formsRes.ok ||
+          !chartsRes.ok ||
           !columnsRes.ok
         ) {
           throw new Error("Failed to fetch data");
@@ -73,6 +82,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
         const reviews = await reviewsRes.json();
         const columnsData = await columnsRes.json();
         const formsData = await formsRes.json();
+        const chartsData = await chartsRes.json();
 
         setData({
           users,
@@ -82,6 +92,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
         });
         setColumns(columnsData);
         setForms(formsData);
+        setCharts(chartsData);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -93,7 +104,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   return (
-    <DataContext.Provider value={{ data, columns, forms, loading }}>
+    <DataContext.Provider value={{ data, columns, charts, forms, loading }}>
       {children}
     </DataContext.Provider>
   );
